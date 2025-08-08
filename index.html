@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Test OneSignal Push</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- OneSignal SDK -->
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.init({
+        appId: "0c7ebc4d-2973-4618-ab06-27bbb2db27e9", // Ganti dengan App ID milik kamu
+        safari_web_id: "web.onesignal.auto.21eb64f1-a307-4b53-9fa9-5af0b410a31b", // opsional
+        notifyButton: { enable: true }
+      });
+
+      // Menampilkan status subscription
+      const isSubscribed = await OneSignal.User.PushSubscription.optedIn;
+      console.log("Is subscribed:", isSubscribed);
+
+      document.getElementById("subscribeBtn").addEventListener("click", async () => {
+        await OneSignal.User.PushSubscription.optIn();
+        alert("Subscribed! Coba kirim notifikasi dari OneSignal dashboard.");
+      });
+
+      document.getElementById("unsubscribeBtn").addEventListener("click", async () => {
+        await OneSignal.User.PushSubscription.optOut();
+        alert("Unsubscribed!");
+      });
+    });
+  </script>
+</head>
+<body>
+  <h1>OneSignal Test Page</h1>
+  <p>Klik tombol di bawah untuk mengatur subscription:</p>
+  <button id="subscribeBtn">Subscribe Push</button>
+  <button id="unsubscribeBtn">Unsubscribe Push</button>
+
+  <p>📌 Setelah subscribe, buka <a href="https://dashboard.onesignal.com/" target="_blank">OneSignal Dashboard</a> → Messages → New Push untuk mengirim notifikasi test.</p>
+</body>
+</html>
